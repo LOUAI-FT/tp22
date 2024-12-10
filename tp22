@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char *ChargerChaine(int N) {
+    char *chaine = (char*)malloc(N+1);  // Allocating memory for the string
+    if (chaine == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);  // Exit the program if malloc fails
+    }
+    printf("Veuillez saisir la chaine:\n");
+    fgets(chaine, N, stdin);
+    chaine[strcspn(chaine, "\n")] = '\0';  // Remove newline character if present
+    return chaine;
+}
+
+int Longueur(char *ch) {
+    return strlen(ch);  // Returns the length of the string
+}
+
+void ChargerTab(char *p, char *Tab) {
+    strcpy(Tab, p);  // Copy string p to Tab
+}
+
+void InverserTab(char *Tab, char *T, int m) {
+    for (int i = 0; i < m; i++) {
+        T[i] = Tab[m-i-1];  // Reverse the string
+    }
+}
+
+void AfficherTab(char *Tab, int m) {
+    for (int i = 0; i < m; i++) {
+        printf("%c", Tab[i]);  // Print each character of the string
+    }
+    printf("\n");
+}
+
+int main() {
+    int n;
+    printf("Veuillez saisir la taille maximale de la chaine:\n");
+    scanf("%d", &n);
+    getchar();  // Clear the newline character left by scanf
+
+    if (n <= 0) {
+        printf("La taille de la chaine doit etre positive.\n");
+        return 1;  // Exit if the size is invalid
+    }
+
+    char *ch = ChargerChaine(n);  // Allocate and get user input string
+    int m = Longueur(ch);  // Length of the string
+
+    // Dynamically allocate memory for Tab and T based on the length m
+    char *Tab = (char*)malloc(m+1);  
+    char *T = (char*)malloc(m+1);
+
+    if (Tab == NULL || T == NULL) {
+        printf("Memory allocation failed\n");
+        free(ch);  // Free previously allocated memory
+        return 1;  // Exit the program if malloc fails
+    }
+
+    ChargerTab(ch, Tab);  // Copy the original string to Tab
+    printf("La chaine originale: \n");
+    AfficherTab(Tab, m);  // Display the original string
+
+    InverserTab(Tab, T, m);  // Reverse the string into T
+    printf("La chaine inversée:\n");
+    AfficherTab(T, m);  // Display the reversed string
+
+    // Free dynamically allocated memory
+    free(ch);
+    free(Tab);
+    free(T);
+
+    return 0;
+}
